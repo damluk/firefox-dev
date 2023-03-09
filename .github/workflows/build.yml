@@ -1,5 +1,10 @@
 name: build
-on: [push]
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '55 * * * *'
+
 jobs:
   version:
     runs-on: ubuntu-latest
@@ -11,7 +16,10 @@ jobs:
         run: ./.github/scripts/package_version.sh
   build:
     needs: version
+    if: ${{ needs.version.outputs.package_version }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     env:
       package_version: ${{ needs.version.outputs.package_version }}
     steps:
@@ -20,7 +28,7 @@ jobs:
         with:
           extra-build-deps: devscripts
           before-build-hook: ./.github/scripts/before_build.sh
-      - uses: actions/upload-artifact@v3
+      - uses: ncipollo/release-action@v1
         with:
-          name: firefox-dev-${{ needs.version.outputs.package_version }}
-          path: debian/artifacts/*
+          artifacts: debian/artifacts/*
+          tag: v${{ needs.version.outputs.package_version }}

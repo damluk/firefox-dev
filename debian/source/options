@@ -1,3 +1,4 @@
 tar-ignore = "download"
 tar-ignore = ".git"
 tar-ignore = ".gitignore"
+tar-ignore = ".github"

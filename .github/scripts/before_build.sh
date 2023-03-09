@@ -10,4 +10,4 @@ url="https://download-installer.cdn.mozilla.net/pub/devedition/releases/$package
 mkdir download
 curl -s -o - $url | tar -C download --strip-components=1 -jxf -
 
-dch --create --newversion $package_version --package firefox-dev
+dch --create --newversion $package_version --package firefox-dev --distribution unstable
