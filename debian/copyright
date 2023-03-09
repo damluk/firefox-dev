@@ -1,0 +1,16 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Source: https://download-installer.cdn.mozilla.net/pub/devedition/releases/
+Upstream-Name: Firefox Developer Edition
+
+Files:
+ *
+Copyright:
+ 2018-2020 VictoriaMetrics
+License: Mozilla Public License
+
+Files:
+ debian/*
+Copyright:
+ 2022 MomsFriendlyRobotRepository
+License: Mozilla Public License
+Comment: Debian packaging is licensed under the same terms as upstream

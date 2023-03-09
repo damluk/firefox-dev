@@ -1,0 +1,19 @@
+Source: firefox-dev
+Section: net
+Priority: optional
+Maintainer: MomsFriendlyRobotRepository
+Homepage: https://download-installer.cdn.mozilla.net/pub/devedition/releases/
+Build-Depends:
+ debhelper-compat (= 13),
+ curl,
+Standards-Version: 4.5.1
+Rules-Requires-Root: no
+
+Package: firefox-dev
+Architecture: amd64
+Pre-Depends:
+ ${misc:Pre-Depends},
+Depends:
+ ${misc:Depends},
+Description: Firefox Developer Edition
+ .
