@@ -32,3 +32,8 @@ jobs:
         with:
           artifacts: debian/artifacts/*
           tag: v${{ needs.version.outputs.package_version }}
+      - uses: docker://lpenz/ghaction-packagecloud:0.4
+        with:
+          repository: firefox-dev/debian/bookworm
+        env:
+          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
