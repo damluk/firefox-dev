@@ -24,16 +24,61 @@ jobs:
       package_version: ${{ needs.version.outputs.package_version }}
     steps:
       - uses: actions/checkout@v3
+
+      - uses: damluk/github-actions/actions/aptly/repos/create@main
+        with:
+          api_url: ${{ secrets.APTLY_API_URL }}
+          basic_auth_user: ${{ secrets.APTLY_BASIC_AUTH_USER }}
+          basic_auth_pass: ${{ secrets.APTLY_BASIC_AUTH_PASS }}
+          name: firefox-dev
+          allow_failure: true
+
       - uses: jtdor/build-deb-action@v1
         with:
           extra-build-deps: devscripts
           before-build-hook: ./.github/scripts/before_build.sh
+
       - uses: ncipollo/release-action@v1
         with:
           artifacts: debian/artifacts/*
           tag: v${{ needs.version.outputs.package_version }}
-      - uses: docker://lpenz/ghaction-packagecloud:0.4
+
+      - uses: damluk/github-actions/actions/aptly/files/upload@main
         with:
-          repository: firefox-dev/debian/bookworm
-        env:
-          PACKAGECLOUD_TOKEN: ${{ secrets.PACKAGECLOUD_TOKEN }}
+          api_url: ${{ secrets.APTLY_API_URL }}
+          basic_auth_user: ${{ secrets.APTLY_BASIC_AUTH_USER }}
+          basic_auth_pass: ${{ secrets.APTLY_BASIC_AUTH_PASS }}
+          dir: firefox-dev
+          files: debian/artifacts/*
+
+      - uses: damluk/github-actions/actions/aptly/repos/add@main
+        with:
+          api_url: ${{ secrets.APTLY_API_URL }}
+          basic_auth_user: ${{ secrets.APTLY_BASIC_AUTH_USER }}
+          basic_auth_pass: ${{ secrets.APTLY_BASIC_AUTH_PASS }}
+          name: firefox-dev
+          dir: firefox-dev
+
+      - uses: damluk/github-actions/actions/aptly/publication/publish@main
+        with:
+          api_url: ${{ secrets.APTLY_API_URL }}
+          basic_auth_user: ${{ secrets.APTLY_BASIC_AUTH_USER }}
+          basic_auth_pass: ${{ secrets.APTLY_BASIC_AUTH_PASS }}
+          allow_failure: true
+          prefix: firefox-dev
+          Distribution: unstable
+          SourceKind: local
+          Sources: '[{"Name": "firefox-dev"}]'
+          Architectures: '["amd64"]'
+          SigningSkip: true
+
+      - uses: damluk/github-actions/actions/aptly/publication/update@main
+        with:
+          api_url: ${{ secrets.APTLY_API_URL }}
+          basic_auth_user: ${{ secrets.APTLY_BASIC_AUTH_USER }}
+          basic_auth_pass: ${{ secrets.APTLY_BASIC_AUTH_PASS }}
+          allow_failure: false
+          prefix: firefox-dev
+          distribution: unstable
+          ForceOverwrite: true
+          SigningSkip: true

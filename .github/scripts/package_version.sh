@@ -12,5 +12,5 @@ git fetch --depth 1 --tags
 if [ -z "$(git show-ref v$version)" ]
 then
     # No release yet
-    echo "::set-output name=package_version::$version"
+    echo "package_version=$version" >> $GITHUB_OUTPUT
 fi
