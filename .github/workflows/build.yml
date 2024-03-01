@@ -14,7 +14,7 @@ jobs:
     outputs:
       package_version: ${{ github.event.inputs.package_version || steps.version.outputs.package_version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - id: version
         run: ./.github/scripts/package_version.sh
   build:
@@ -26,7 +26,7 @@ jobs:
     env:
       package_version: ${{ needs.version.outputs.package_version }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: damluk/github-actions/actions/aptly/repos/create@main
         with:
