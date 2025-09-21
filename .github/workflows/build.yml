@@ -10,7 +10,7 @@ on:
 
 jobs:
   version:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       package_version: ${{ github.event.inputs.package_version || steps.version.outputs.package_version }}
     steps:
@@ -20,7 +20,7 @@ jobs:
   build:
     needs: version
     if: ${{ needs.version.outputs.package_version }}
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     permissions:
       contents: write
     env:
