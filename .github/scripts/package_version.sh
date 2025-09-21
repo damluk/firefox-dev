@@ -1,6 +1,6 @@
 #!/bin/sh
 
-set -e
+set -ex
 
 base_url="https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=de"
 redirect_url=$( curl -s -o /dev/null -w '%{redirect_url}' $base_url )
